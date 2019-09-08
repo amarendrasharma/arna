@@ -1,5 +1,8 @@
 <?php
 
+use TCG\Voyager\Models\Category;
+use TCG\Voyager\Models\Post;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -12,15 +15,15 @@
 */
 
 Route::get('/', function () {
-    $posts = App\Post::all();
-    return view('home', compact('posts'));
+    $categories = Category::with('posts')->get();
+    return view('home', compact('categories'));
 });
 Route::get('post/{slug}', function($slug){
-	$post = App\Post::where('slug', '=', $slug)->firstOrFail();
+	$post = Post::where('slug', '=', $slug)->firstOrFail();
 	return view('post', compact('post'));
 });
 Route::get('/test', function(){
-	$posts = App\Post::all();
+	$posts = Post::all();
 	return view('layouts.master',compact('posts'));
 });
 Route::get('contact', 'ContactController@contact');
